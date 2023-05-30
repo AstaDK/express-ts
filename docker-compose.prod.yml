@@ -11,3 +11,44 @@ services:
       - .env
     volumes:
       - ./dist:/app
+
+  db:
+    image: postgres
+    restart: always
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    env_file:
+      - .env
+    ports:
+      - '5100:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - base-express-prod-network
+
+  adminer:
+    image: adminer
+    depends_on:
+      - db
+    restart: always
+    environment:
+      ADMINER_DESIGN: dracula
+      ADMINER_PLUGINS: tables-filter tinymce
+    ports:
+      - 8100:8080
+    networks:
+      - base-express-prod-network
+
+networks:
+  base-express-prod-network:
+
+volumes:
+  db-data:
+    driver: local
