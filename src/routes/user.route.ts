@@ -1,9 +1,12 @@
 import express from 'express';
+import { UserService } from '../services';
 
 export class UserRoute {
   public router: express.Router;
+  private userService: UserService;
   constructor() {
     this.router = express.Router();
+    this.userService = new UserService();
     this.load();
   }
 
@@ -12,6 +15,9 @@ export class UserRoute {
   }
 
   private test(_: express.Request, res: express.Response) {
-    res.json({ success: true });
+    const data = this.userService.get();
+    res.json({
+      data,
+    });
   }
 }

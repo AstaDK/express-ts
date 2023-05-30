@@ -5,8 +5,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "outDir": "./dist",
-    "baseUrl": "."
+    "outDir": "./dist"
   },
   "include": ["./src", "src/index.ts", "./public"],
   "exclude": ["./dist", "node_modules"]
