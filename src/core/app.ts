@@ -2,13 +2,17 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import { BaseRoute } from '../routes';
 export class App {
   private app: express.Express;
   private port: string;
+  private baseRoute: BaseRoute;
 
   constructor() {
     this.app = express();
     this.port = process.env.PORT as string;
+    this.baseRoute = new BaseRoute();
+
     this.configureMiddleware();
     this.configureRoutes();
   }
@@ -26,6 +30,7 @@ export class App {
   }
 
   private configureRoutes(): void {
+    this.app.use('/api/v1', this.baseRoute.router);
     this.app.get('/', (_, res: express.Response) => {
       res.send('Welcome API');
     });
